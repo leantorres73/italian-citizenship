@@ -3,6 +3,9 @@ var agent = superagent.agent();
 const cheerio = require('cheerio');
 const { sendMessage } = require('./telegram');
 
+const minutes = process.env.MINUTES || 3; 
+const interval = minutes * 60 * 1000;
+
 const detectPassport = async () => {
   await agent.post('https://prenotami.esteri.it/Home/Login')
     .type('form')
@@ -13,7 +16,7 @@ const detectPassport = async () => {
   var $ = cheerio.load(res.text);
 
   //select DOM elements using jquery selectors
-  $('#WlNotAvailable').filter(function(){
+  $('#WlNotAvailable').filter(async () => {
       var data = $(this);
       value = data.val();
       if (value != 'Al momento non ci sono date disponibili per il servizio richiesto') {
@@ -24,3 +27,6 @@ const detectPassport = async () => {
 }
 
 detectPassport();
+setInterval(async () => {
+  await detectPassport();
+}, interval);

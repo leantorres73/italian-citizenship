@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.0.0-rc.11",
+    "node-telegram-bot-api": "^0.57.0",
     "request": "^2.88.2",
     "superagent": "^7.1.6"
   }
