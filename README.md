@@ -5,6 +5,9 @@ Primero instalar paquetes:
 ``` npm install ```
 
 Segundo invocar el proceso.
-Es necesario pasar por parametros usuario y contraseña. Ej:
+Es necesario pasar por parametros..
 
-``` email=myemail@org.com password=pass node index.js ```
+ usuario y contraseña
+ telegram token si es a un canal
+
+``` TELEGRAM_TOKEN=token TELEGRAM_CHANNEL=channel email=myemail@org.com password=pass node index.js ```

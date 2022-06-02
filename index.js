@@ -1,9 +1,10 @@
 var superagent = require('superagent');
 var agent = superagent.agent();
 const cheerio = require('cheerio');
+const { sendMessage } = require('./telegram');
 
 const detectPassport = async () => {
-  await agent.post('https://prenotami.esteri.it/Home/Login');
+  await agent.post('https://prenotami.esteri.it/Home/Login')
     .type('form')
     .send({ Email: process.env.email, Password: process.env.password });
   
@@ -17,6 +18,7 @@ const detectPassport = async () => {
       value = data.val();
       if (value != 'Al momento non ci sono date disponibili per il servizio richiesto') {
         // add telegram functionality
+        await sendMessage('Ciudadania disponible');
       }
   });
 }
