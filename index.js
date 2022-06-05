@@ -16,7 +16,7 @@ const detectPassport = async () => {
 
   const selector = root.querySelector('#WlNotAvailable');
   if (!selector || !selector.attrs || selector.attrs.value != 'Al momento non ci sono date disponibili per il servizio richiesto') {
-    await sendMessage('Ciudadania disponible');
+    await sendMessage('Pasaporte disponible');
   }
 }
 
