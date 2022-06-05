@@ -1,6 +1,6 @@
-var superagent = require('superagent');
-var agent = superagent.agent();
-const cheerio = require('cheerio');
+const superagent = require('superagent');
+const agent = superagent.agent();
+const parser = require('node-html-parser');
 const { sendMessage } = require('./telegram');
 
 const minutes = process.env.MINUTES || 3; 
@@ -13,17 +13,13 @@ const detectPassport = async () => {
   
   const res = await agent.get('https://prenotami.esteri.it/Services/Booking/552');
   //use cheerio to use jquery to select DOM elements
-  var $ = cheerio.load(res.text);
+  const root = parser.parse(res.text);
 
   //select DOM elements using jquery selectors
-  $('#WlNotAvailable').filter(async () => {
-      var data = $(this);
-      value = data.val();
-      if (value != 'Al momento non ci sono date disponibili per il servizio richiesto') {
-        // add telegram functionality
-        await sendMessage('Ciudadania disponible');
-      }
-  });
+  const selector = root.querySelector('#WlNotAvailable');
+  if (!selector || !selector.attrs || selector.attrs.value != 'Al momento non ci sono date disponibili per il servizio richiesto') {
+    await sendMessage('Ciudadania disponible');
+  }
 }
 
 detectPassport();
