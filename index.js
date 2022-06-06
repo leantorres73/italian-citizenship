@@ -1,4 +1,5 @@
 const superagent = require('superagent');
+const fs = require('fs');
 const agent = superagent.agent();
 const parser = require('node-html-parser');
 const { sendMessage } = require('./telegram');
@@ -12,11 +13,12 @@ const detectPassport = async () => {
     await login();
     res = await query();
   }
-  const root = parser.parse(res.text);
-
-  const selector = root.querySelector('#WlNotAvailable');
-  if (!selector || !selector.attrs || selector.attrs.value != 'Al momento non ci sono date disponibili per il servizio richiesto') {
-    await sendMessage('Pasaporte disponible');
+  if (res.req.path == '/Services') {
+    const root = parser.parse(res.text);
+    const selector = root.querySelector('#WlNotAvailable');
+    if (!selector || !selector.attrs || selector.attrs.value != 'Al momento non ci sono date disponibili per il servizio richiesto') {
+      await sendMessage('Pasaporte disponible');
+    }
   }
 }
 
